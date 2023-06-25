@@ -1,0 +1,25 @@
+{% extends 'padre/base.html' %}
+{% block titulo %}
+Nueva nota :D
+{% endblock titulo %}
+
+{% block contenido %}
+<h1> Hola desde listar nota </h1>
+{% for venta in ventas %}
+    <hr>
+        {{ venta.id }}
+        {{ publicacion.titulo }}
+        {{ publicacion.descripcion }}
+        {{ publicacion.fecha_publicacion }}
+        {{ publicacion.fecha_modificacion }}
+        {{ publicacion.usuario.username }}
+        {{ publicacion.usuario.first_name }}
+        {{ publicacion.usuario.last_name }}
+        {{ publicacion.usuario.email }}
+        {{ publicacion.usuario.is_active }}
+        {{ publicacion.usuario.is_staff }}
+        {{ publicacion.usuario.is_superuser }}
+        {{ publicacion.usuario.password }}
+    <hr>
+{% endfor %}
+{% endblock contenido %}

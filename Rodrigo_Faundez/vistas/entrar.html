@@ -1,0 +1,48 @@
+{% extends 'padre/base.html' %}
+{% load static %}
+{% block titulo %}
+Entrar
+{% endblock titulo %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static '/css/login.css'%}">
+{% endblock css %}
+
+{% block contenido %}
+
+
+
+
+<div id="contenedor">
+    <form method="POST">
+        {% csrf_token %}
+        <div id="central">
+            <div id="login">
+                <div class="titulo">
+                    Bienvenido
+                </div>
+                <form id="loginform">
+                    {{ formulario.usuario }}
+                    <label for="{{ formulario.usuario.id_for_label }}">
+                        {{ formulario.usuario.label }}
+                    </label>
+                    {{ formulario.contrasenia_usuario }}
+                    <label for="{{ formulario.contrasenia_usuario.id_for_label }}">
+                        {{ formulario.contrasenia_usuario.label }}
+                    </label>
+
+                    <button type="submit" title="Ingresar" name="Ingresar">Login</button>
+                </form>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock contenido %}
+
+{% block footer %}
+{% endblock footer %}

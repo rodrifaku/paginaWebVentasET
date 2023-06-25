@@ -1,0 +1,81 @@
+{% extends 'padre/base.html' %}
+{% load static %}
+
+{% block titulo %}
+modificar
+{% endblock titulo %}
+{% block css %}
+<style>
+    body {
+        background-image: url(/static/img/fondo.jpg);
+        ;
+    }
+
+    #contenedor {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        min-width: 100vw;
+        min-height: 100vh;
+        width: 100%;
+        height: 100%;
+        color: azure;
+
+    }
+
+    form {
+        width: 400px;
+        background: #3282b8;
+        padding: 20px;
+        margin: auto;
+        margin-top: 10px;
+        border-radius: 10px;
+        font-family: 'calibri';
+        color: #e5edf1;
+        text-align: end;
+    }
+
+    form h1 {
+        font-size: 22px;
+        margin-bottom: 20px;
+        text-align: center;
+        color: white;
+        text-transform: uppercase;
+
+    }
+
+    form button {
+        background: #0f4c75;
+        font-size: 22px;
+        margin-bottom: 20px;
+        text-align: center;
+        border: none;
+        padding: 12px;
+        margin: 16px 0;
+
+    }
+
+    form button:hover {
+        background: #1b262c;
+        text-decoration: underline;
+    }
+</style>
+{% endblock css%}
+{% block contenido %}
+<div id="contenedor">
+
+    <form method="post" enctype="multipart/form-data">
+        <h1>Modificar Productos</h1>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" rol='submit' class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+
+<hr class="featurette-divider">
+{% include 'padre/footer.html' %}
+
+
+{% endblock contenido %}
+{% block footer %}
+{% endblock footer %}
