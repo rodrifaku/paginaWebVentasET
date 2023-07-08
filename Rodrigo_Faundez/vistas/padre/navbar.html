@@ -31,8 +31,8 @@
     }
 
     main {
-        margin-left: 5rem;
-        padding: 1rem;
+        margin-left: 5.5rem;
+        padding: 3rem;
     }
 
     .navbar {
@@ -151,6 +151,7 @@
             bottom: 0;
             width: 100vw;
             height: 5rem;
+            padding: 1rem 0;
         }
 
         .logo {
@@ -159,10 +160,31 @@
 
         .navbar-nav {
             flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
         }
 
+
+
         .nav-link {
+            width: auto;
+            height: auto;
             justify-content: center;
+            padding: 0.5rem 0.5rem;
+
+
+        }
+
+        .navbar:hover {
+            width: 100%;
+        }
+
+        .navbar:hover .logo svg {
+            margin-left: 0;
+        }
+
+        .navbar:hover .logo-text {
+            left: -999px;
         }
 
         main {
@@ -206,6 +228,7 @@
 
         {% if user.is_authenticated %}
         <li class="logo">
+
             <a href="#" class="nav-link">
                 <span class="link-text logo-text text-center">Hola {{ user.first_name }}</span>
             </a>
@@ -217,6 +240,8 @@
             </a>
         </li>
         {% endif %}
+
+
         <li class="nav-link">
             <a href="{% url 'mostrar_principal'%}">
                 <i class="bx bx-home-smile icon"></i>
@@ -236,7 +261,7 @@
             </a>
         </li>
         <li class="nav-link">
-            <a href="#">
+            <a href="{% url 'historial_compras'%}">
                 <i class="bx bx-package icon"></i>
                 <span class="link-text nav-text">Historial</span>
             </a>
@@ -264,11 +289,20 @@
         </li>
         {% endif %}
         <li class="nav-link">
+            <a href="{% url 'mostrar_nosotros' %}">
+                <i class="bx bx-package icon"></i>
+                <span class="link-text nav-text">Nosotros</span>
+            </a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-link">
             <a href="{% url 'cerrar_sesion' %}">
                 <i class="bx bx-log-out icon"></i>
                 <span class="link-text nav-text">Salir</span>
             </a>
         </li>
+        {% endif %}
+
     </ul>
 
 </nav>

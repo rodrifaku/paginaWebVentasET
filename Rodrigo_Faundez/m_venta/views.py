@@ -2,7 +2,7 @@ from m_venta import carrito
 from m_venta.carrito import Carrito
 from .models import Producto
 from django.shortcuts import render, redirect
-from django.shortcuts import render, redirect, get_list_or_404
+from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from .forms import ProductoForm
 from django.contrib.auth.decorators import login_required
 from sweetify import success, warning
@@ -103,45 +103,62 @@ def eliminar_producto(request, id):
 @login_required
 def confirmar_compra(request):
     if request.method == 'POST':
-        usuario = request.user
-        venta = Venta(usuario=usuario)
-        venta.save()
-        venta_id = venta.id
-
         carrito = request.session.get('carrito', {})
-        total_venta = 0
-        for id, datos_producto in carrito.items():
-            producto_id = id
-            cantidad = int(datos_producto['cantidad'])
-            precio_unitario = int(datos_producto['precio'])
+        if not carrito:
+            warning(request, 'Carro vacio',
+                    text="Siga comprando", timer=3000, button="OK")
+            return redirect('mostrar_carrito')
+        else:
+            usuario = request.user
+            venta = Venta(usuario=usuario)
+            venta.save()
+            venta_id = venta.id
 
-            detalleventa = DetalleVenta.objects.create(
-                cantidad=cantidad,
-                precio_unitario=precio_unitario,
-                producto_id=producto_id,
-                venta_id=venta_id
-            )
-            detalleventa.save()
+            carrito = request.session.get('carrito', {})
+            total_venta = 0
+            for id, datos_producto in carrito.items():
+                producto_id = id
+                cantidad = int(datos_producto['cantidad'])
+                precio_unitario = int(datos_producto['precio'])
 
-            
-            subtotal = cantidad * precio_unitario
-            total_venta += subtotal
+                detalleventa = DetalleVenta.objects.create(
+                    cantidad=cantidad,
+                    precio_unitario=precio_unitario,
+                    producto_id=producto_id,
+                    venta_id=venta_id
+                )
+                detalleventa.save()
 
-        venta.total = total_venta 
-        venta.save()  
+                subtotal = cantidad * precio_unitario
+                total_venta += subtotal
+
+                venta.total = total_venta
+                venta.save()
 
         carrito.clear()
         success(request, f'Boleta emitida')
         return redirect('mostrar_boleta', id_venta=venta.id)
 
     else:
-       
+
         return redirect('mostrar_carrito')
 
 
 @login_required
 def mostrar_boleta(request, id_venta):
-    venta = Venta.objects.get(id=id_venta)
+    venta = get_object_or_404(Venta, id=id_venta, usuario=request.user)
     detalles_venta = DetalleVenta.objects.filter(venta=venta)
     total = venta.total
-    return render(request, 'negocio/mostrar_boleta.html', {'venta': venta, 'detalles_venta': detalles_venta, 'total': total})
+    return render(request, 'negocio/mostrar_boleta.html', {
+        'venta': venta,
+        'detalles_venta': detalles_venta,
+        'total': total
+    })
+
+
+@login_required
+def historial_compras(request):
+    usuario = request.user
+    compras = Venta.objects.filter(usuario=usuario)
+
+    return render(request, 'negocio/historial_compras.html', {'compras': compras})

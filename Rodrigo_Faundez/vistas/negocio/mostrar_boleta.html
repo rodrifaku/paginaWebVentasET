@@ -1,5 +1,6 @@
 {% extends 'padre/base.html' %}
 {% load static %}
+{% load myfilters %}
 
 {% block titulo %}
 Boleta
@@ -8,61 +9,57 @@ Boleta
 <style>
     body {
         background-image: url(/static/img/fondo.jpg);
-        ;
     }
 
-    #contenedor {
-        display: flex;
-        margin: 0px;
-        padding: 12;
-        min-width: 100vw;
-        min-height: 100vh;
-        width: 100%;
-        height: 21%;
-        color: azure;
-
+    h2 {
+        color: #313131;
+        font-size: 24px;
+        text-align: center;
     }
 
-    form {
-        width: 400px;
-        background: #3282b8;
-        padding: 100px;
+    .receipt-container {
+        background-color: #ffffff;
+        width: 80%;
         margin: auto;
-        margin-top: 10px;
-        border-radius: 10px;
-        font-family: 'calibri';
-        color: #e5edf1;
-        text-align: end;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .button {
-        display: block;
-        width: 70px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: 600;
-        background-color: #150bd7;
-        border-radius: 10px;
-        padding: 10px 150px;
-        margin: 0px 30px;
-        color: #e5edf1;
-        text-decoration: none;
-
+    table {
+        width: 100%;
+        border-collapse: collapse;
     }
 
-    button:hover {
-        background-color: transparent;
-        border: 2px solid rgb(127, 206, 255);
-        color: rgb(224, 159, 8);
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #040432;
+    }
+
+    th {
+        background-color: #040432;
+        color: #e5edf1;
+    }
+
+    td {
+        color: #040432;
+    }
+
+    .total-row {
+        font-weight: bold;
+        color: #ffffff;
     }
 </style>
 {% endblock css %}
 
 {% block contenido %}
-<div>
+<div class="receipt-container">
     <h2>Boleta de venta Nº{{venta.id}}</h2>
-    <p>Compra realizada por: {{venta.usuario.first_name}} {{venta.usuario.last_name}}</p>
-    <p>Fecha: {{ venta.fecha_venta }}</p> 
     <table>
+        <tr>
+            <td colspan="2">Compra realizada por: {{venta.usuario.first_name}} {{venta.usuario.last_name}}</td>
+            <td colspan="2">Fecha: {{ venta.fecha_venta }}</td>
+        </tr>
         <tr>
             <th>Producto</th>
             <th>Cantidad</th>
@@ -72,15 +69,14 @@ Boleta
         {% for detalle in detalles_venta %}
         <tr>
             <td>{{ detalle.producto.modelo }}</td>
-            <td>{{ detalle.cantidad }}</td>
-            <td>{{ detalle.precio_unitario }}</td>
-            <td>{{ detalle.subtotal }}</td>
+            <td>{{ detalle.cantidad|intcomma }}</td>
+            <td>$ {{ detalle.precio_unitario|intcomma }}</td>
+            <td>$ {{ detalle.subtotal|intcomma }}</td>
         </tr>
         {% endfor %}
-        <tr>
+        <tr class="total-row">
             <td colspan="3">Total:</td>
-
-            <td>{{ total }}</td>
+            <td>$ {{ total|intcomma }}</td>
         </tr>
     </table>
 </div>

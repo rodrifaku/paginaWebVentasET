@@ -13,3 +13,7 @@ def mostrar_productos(request):
         'productos': Producto.objects.all()
     }
     return render(request, 'productos.html', contexto)
+
+
+def mostrar_nosotros(request):
+    return render(request, 'nosotros.html')

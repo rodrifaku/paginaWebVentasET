@@ -12,7 +12,8 @@ from .views import (
     confirmar_compra,
     mostrar_administracion,
     modificar_producto,
-    eliminar_producto
+    eliminar_producto,
+    historial_compras
 
 )
 
@@ -31,6 +32,7 @@ urlpatterns = [
     path('eliminar_producto/<id>', eliminar_producto, name='eliminar_producto'),
     path('mostrar_boleta/<int:id_venta>/',
          mostrar_boleta, name='mostrar_boleta'),
+    path('historial_compras', historial_compras, name='historial_compras')
 
 
 ]
